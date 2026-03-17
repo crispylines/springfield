@@ -49,6 +49,13 @@ Rules:
 - **Colors and fonts**: Use the exact palette and typography from the Design Standards — never invent new colors
 - **Semantic HTML**: Use proper elements (button, nav, main, section, article) for accessibility
 - **Visual storytelling in notes**: Read the story `notes` field carefully — it contains visual direction, not just technical hints
+- **NEVER reference image files that don't exist**. You cannot create JPG/PNG/GIF files. If a design calls for images:
+  - Use **CSS gradients** for thumbnails/backgrounds (e.g., `bg-gradient-to-br from-purple-500 to-blue-600`)
+  - Use **inline SVGs** for illustrations and decorative elements
+  - Use **icon library components** (Lucide, Heroicons, react-icons) for icons
+  - Use **emoji** as visual accents in cards or empty states
+  - Use **CSS initials** for avatars (colored circle with first letter)
+  - A broken `<img>` tag with a missing src is the #1 thing that makes a project look incomplete — NEVER do this
 
 ### Step 4: Self-Check Acceptance Criteria
 
@@ -60,7 +67,15 @@ Before running tests, go through EACH acceptance criterion for your story ONE BY
 
 This catches issues before the Reviewer does, saving a full rejection cycle.
 
-### Step 5: Verify
+### Step 5: Clean Up
+
+Before verifying, check for development artifacts:
+- **Remove any showcase/demo sections** you added to pages to test components (e.g., "Design System" sections with raw buttons/cards/inputs). These are development aids, not production content.
+- **Remove any test rendering** you added to `page.tsx` or layout files to verify components work.
+- **Remove commented-out code** and `console.log` statements you used during development.
+- If a page file has both real sections AND a "component showcase" or "style guide" section, DELETE the showcase — only the real application content should remain.
+
+### Step 6: Verify
 
 Run typecheck and tests:
 ```bash
@@ -72,6 +87,12 @@ If tests fail:
 - Run again
 - Do NOT mark the story as passing if tests fail
 
+**Then verify the app actually runs:**
+```bash
+npm run build
+```
+A successful build confirms pages render without runtime errors. If `npm run build` fails with errors that tests didn't catch, fix them before marking the story as passing.
+
 If you cannot fix the tests after reasonable effort:
 - Do NOT set `passes: true`
 - Update `lastError` in prd.json with what went wrong
@@ -79,9 +100,9 @@ If you cannot fix the tests after reasonable effort:
 - Commit what you have with: `wip: [ID] - [Title] (attempt [N])`
 - End your turn normally (the reviewer will assess)
 
-### Step 6: Commit (if passing)
+### Step 7: Commit (if passing)
 
-If typecheck and tests pass:
+If typecheck, tests, and build pass:
 
 ```bash
 git add -A
@@ -92,7 +113,7 @@ Then update prd.json:
 - Set `passes: true` for this story
 - Increment `attempts` by 1
 
-### Step 7: Log Learnings
+### Step 8: Log Learnings
 
 APPEND to `scripts/springfield/progress.txt` Phase Log:
 
@@ -129,7 +150,7 @@ APPEND to `scripts/springfield/progress.txt` Phase Log:
 - Updated the styling
 ```
 
-### Step 8: Update AGENTS.md (if applicable)
+### Step 9: Update AGENTS.md (if applicable)
 
 If you discovered patterns worth preserving permanently (not story-specific), update the `AGENTS.md` file in the project root or in directories where you made significant changes.
 

@@ -44,12 +44,20 @@ Also check:
 - [ ] Transitions/animations are smooth (not abrupt style changes)
 - [ ] Visual direction from the story's `notes` field was followed
 
-### Step 4: Run Verification (if needed)
+### Step 4: Run Verification
 
-If you need to verify something the Builder might have missed:
+Always run these checks:
 ```bash
-npm run typecheck && npm test
+npm run typecheck && npm test && npm run build
 ```
+
+A successful `npm run build` confirms pages render without runtime errors that tests might miss. If the build fails, REJECT.
+
+**Check for development artifacts** — scan the main page files (e.g., `page.tsx`, `layout.tsx`) for:
+- "Design System" or "Component Showcase" sections left over from theme setup
+- Raw component demos (grids of buttons, color palettes, input samples) that aren't part of the actual app
+- Commented-out test code or `console.log` statements
+- If you find any, REJECT — these make the app look unfinished
 
 ### Step 5: Make Your Decision
 
@@ -124,6 +132,9 @@ npm run typecheck && npm test
 - Fixed widths that break responsive layout → REJECT
 - Missing loading or empty states for async/list components → REJECT
 - Colors/fonts don't match Design Standards → REJECT (specify which ones)
+- **References to nonexistent image files** (JPG/PNG/GIF paths that don't exist) → REJECT — All visuals must be programmatic (CSS gradients, inline SVGs, icon components, emoji). If you see `src="/images/something.jpg"` and that file doesn't exist, REJECT immediately.
+- **Development artifacts left in production pages** → REJECT — Component showcases, "Design System" sections, color palette grids, raw button/input demos that aren't part of the actual app. These are dev testing aids that must be removed before commit.
+- **`npm run build` fails** → REJECT — if the production build doesn't succeed, the app is not shippable
 - Minor style differences from plan → APPROVE (note it)
 - Could be slightly better but works → APPROVE
 

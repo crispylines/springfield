@@ -56,6 +56,15 @@ These prevent repeated mistakes and enforce project-specific conventions.
 - [e.g., "Use happy-dom instead of jsdom for Vitest — jsdom has ESM issues with parse5"]
 - [e.g., "Next.js 14+ App Router uses `use(params)` to unwrap Promise params in page components"]
 
+### Asset Rules (CRITICAL)
+- **NO external image files** (JPG, PNG, GIF, WebP) — Claude cannot generate binary files, so referencing them creates broken images
+- All visuals MUST be programmatic: inline SVGs, CSS gradients, icon library components (Lucide, Heroicons), emoji, or CSS patterns
+- For project thumbnails/cards: use gradient backgrounds with an SVG icon or large emoji representing the category
+- For profile/avatar images: use a CSS gradient circle with initials, an SVG illustration, or an icon
+- For hero/banner images: use CSS gradient backgrounds, SVG patterns, or decorative CSS shapes
+- For any data type with an `image` field: make it a gradient config, icon identifier, or emoji — NOT a file path
+- If the tech stack uses Next.js `<Image>`, only use it for SVGs already in the project (like logos), never for expected-but-nonexistent JPGs
+
 ### Environment & Config
 - [e.g., ".env.local has real keys — NEVER overwrite it"]
 - [e.g., "All env vars read through lib/config.ts, not directly from process.env"]

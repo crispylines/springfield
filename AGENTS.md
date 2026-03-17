@@ -38,6 +38,10 @@ Springfield is an enhanced autonomous development loop with four agent roles:
 - Builder should NOT modify architecture.md — that's the Architect/Reviewer's job
 - Do NOT use Unicode box-drawing characters in PowerShell scripts — use ASCII equivalents
 - Do NOT pass long prompts as `-p` argument — write to temp file and tell Claude to read it
+- **NEVER reference external image files (JPG/PNG/GIF)** — Claude cannot create binary files. All visuals must be programmatic: inline SVGs, CSS gradients, icon libraries (Lucide, Heroicons), emoji, or CSS patterns. Broken images are the #1 cause of projects looking unfinished.
+- **Clean up development artifacts** — Component showcases, "Design System" demo sections, color palette grids added during theme setup MUST be removed before committing. These make the app look unfinished.
+- **Verify builds, not just tests** — `npm run build` catches runtime errors that `npm test` misses (missing imports, SSR issues, broken pages). Builder runs build before committing, Reviewer verifies it.
+- **Set page metadata** — Default framework titles ("Create Next App"), default favicons, and missing meta descriptions are signs of an unfinished project. Final Polish story requires these.
 
 ## Testing Notes
 

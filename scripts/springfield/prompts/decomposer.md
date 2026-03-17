@@ -116,7 +116,17 @@ The Decomposer is responsible for ensuring the final product is visually distinc
    - Crypto dashboard → "Terminal aesthetic: JetBrains Mono throughout, pure black (#000000) background, matrix green (#00FF41) for positive, hot pink (#FF1493) for negative, data in monospace tables with subtle row hover (#111), scanline overlay effect on the header, should feel like a Bloomberg terminal for degens"
    - Task manager → "Soft, approachable: Nunito for headings, Inter for body, lavender (#F0EDFF) background, deep purple (#4C1D95) primary, rounded-2xl cards with shadow-lg, pastel category tags, smooth spring animations on drag, should feel like a friendly productivity app not a corporate tool"
 
-4. **Responsive design is not optional** — every UI story must include:
+4. **NO external image assets** — Claude cannot generate binary files (JPG/PNG/GIF). Every visual must be achievable with CODE:
+   - Use **inline SVGs** for illustrations, icons, and decorative elements
+   - Use **CSS gradients** for image placeholders, hero backgrounds, and card thumbnails
+   - Use **icon libraries** (Lucide, Heroicons, react-icons) for UI icons
+   - Use **emoji** for simple visual accents where appropriate
+   - Use **CSS patterns/shapes** for decorative backgrounds
+   - If a story needs "project thumbnails" or "profile images", the notes MUST specify a programmatic alternative (e.g., "gradient card with large emoji or SVG icon representing the project category, NOT a .jpg file path")
+   - NEVER write acceptance criteria that depend on image files existing in `/public/images/` or similar
+   - A broken image placeholder is the #1 thing that makes a project look unfinished
+
+5. **Responsive design is not optional** — every UI story must include:
    - `"Responsive layout works on mobile (375px+), tablet, and desktop"`
    - Mobile-first approach in the notes where applicable
 
@@ -230,6 +240,12 @@ The LAST story (highest priority number) must ALWAYS be:
     "All interactive elements have hover/active/focus states",
     "Loading states for all async operations",
     "Error handling for all API calls",
+    "Page title is set to the actual project name (NOT 'Create Next App' or framework default)",
+    "Meta description is set with a meaningful project summary",
+    "Favicon is set (inline SVG, emoji, or generated — NOT the default framework favicon)",
+    "No development artifacts remain in page files (no component showcases, style guides, color palette demos, or test rendering sections)",
+    "No broken links — all href/src values either work, are relative anchors (#section), or are clearly marked TODO placeholders",
+    "No references to nonexistent image files (all visuals must be programmatic)",
     "npm run build succeeds without errors",
     "npm run typecheck passes",
     "npm test passes"
@@ -241,7 +257,7 @@ The LAST story (highest priority number) must ALWAYS be:
   "attempts": 0,
   "lastError": "",
   "blocked": false,
-  "notes": "Final polish pass. Run npm run build to verify production readiness. Fix any remaining rough edges."
+  "notes": "Final polish pass. Run npm run build to verify production readiness. Check page title and favicon are set correctly. Remove any leftover development scaffolding (component showcases, demo sections). Verify all links work or are clearly marked as TODO. Fix any remaining rough edges."
 }
 ```
 
