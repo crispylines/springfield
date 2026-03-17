@@ -1,16 +1,16 @@
 # Springfield
-
+by qrime (https://x.com/qrimeCapital)
 An enhanced autonomous development loop powered by Claude Code. Describe what you want to build in one sentence, and Springfield researches, plans, builds, and reviews it — story by story.
 
-## What's Different from the Ralph Loop?
+## What is Springfield?
 
-Springfield adds four agent roles to the original Ralph loop:
+Springfield breaks your idea into stories and runs four agent roles to build it end-to-end:
 
 | Phase | Agent | What it does |
 |-------|-------|-------------|
 | 1 | **Decomposer** | Takes your idea, researches it, generates properly-sized user stories |
 | 2 | **Architect** | Reads the stories, creates a full implementation plan with interfaces & patterns |
-| 3 | **Builder** | Implements stories one by one (the original Ralph loop behavior) |
+| 3 | **Builder** | Implements stories one by one, recursively running tests and committing as it goes |
 | 3 | **Reviewer** | Validates each story against acceptance criteria and architecture |
 
 Plus:
