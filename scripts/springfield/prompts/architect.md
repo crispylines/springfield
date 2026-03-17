@@ -78,6 +78,35 @@ US-004 → US-002, US-003
 
 (Repeat for all stories)
 
+## Design Standards
+
+The Builder must follow these visual guidelines for every UI component:
+
+### Visual Identity
+- Color palette: [list exact colors from the design foundation story]
+- Typography: [fonts, sizes, weights]
+- Component style: [describe the visual personality]
+
+### Responsive Breakpoints
+- Mobile: 375px+ (single column, stacked layout)
+- Tablet: 768px+ (adaptive layout)
+- Desktop: 1024px+ (full layout)
+- Approach: Mobile-first — start with mobile styles, layer up with min-width media queries
+
+### Component Patterns
+- Buttons: [describe hover, active, focus, disabled states]
+- Cards: [describe shadows, borders, hover effects]
+- Inputs: [describe focus rings, placeholder style, error states]
+- Loading states: [skeleton style, spinner style, or animation approach]
+- Empty states: [icon + message pattern, visual style]
+- Transitions: [what to animate, duration, easing — e.g., "200ms ease-out for hover, 300ms for page transitions"]
+
+### Spacing System
+- Use consistent spacing scale (e.g., 4px, 8px, 12px, 16px, 24px, 32px, 48px)
+- Page padding: [mobile vs desktop]
+- Card padding: [internal spacing]
+- Section gaps: [between major sections]
+
 ## Shared Patterns
 
 Patterns the Builder should follow consistently:
@@ -99,6 +128,9 @@ Before finishing, check:
 - [ ] Core types/interfaces are defined
 - [ ] Project structure covers all features
 - [ ] Testing strategy is clear
+- [ ] Design Standards section is filled in with specific colors, fonts, and component styles
+- [ ] Responsive breakpoints and mobile-first approach are documented
+- [ ] Every UI story's implementation notes mention the visual approach, not just the logic
 
 ### Step 5: Update Progress Log
 

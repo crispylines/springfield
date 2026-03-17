@@ -49,6 +49,13 @@ Generated: [date]
 ## Key Libraries
 - [library]: [version], [what it's for]
 
+## Visual Identity
+- Overall mood: [e.g., dark & futuristic, clean & minimal, playful & colorful]
+- Color palette: [primary, secondary, accent, background colors]
+- Typography: [font choices and why]
+- Component style: [e.g., glassmorphism, flat, neumorphism, sketch/hand-drawn]
+- Inspiration: [any reference sites or design styles]
+
 ## Constraints & Risks
 - [anything that could cause problems]
 ```
@@ -68,7 +75,33 @@ Create `scripts/springfield/prd.json` following these rules:
 - Acceptance criteria must be explicit and testable, not vague
 - Stories must build on each other logically (lower priority = implemented first)
 - First story is ALWAYS project setup (framework, tooling, tests)
+- Second story is ALWAYS a **Visual Theme & Design Foundation** story (see below)
+- Second-to-last story is ALWAYS a **Responsive Design & Polish** story (see below)
 - Last story is ALWAYS "Final Polish and Verification" (see below)
+
+**Design Quality** (CRITICAL — every project must look and feel professional):
+
+The Decomposer is responsible for ensuring the final product is visually polished, not just functional. Follow these rules:
+
+1. **Every UI-facing story** must include design-specific acceptance criteria:
+   - Color, typography, and spacing consistent with the visual theme
+   - Hover, active, and focus states on all interactive elements
+   - Loading and empty states that match the visual theme
+   - Smooth transitions/animations where appropriate
+
+2. **Story `notes` field must include visual direction**, not just technical hints:
+   - BAD notes: `"Create a search component"`
+   - GOOD notes: `"Search input with subtle shadow on focus, results appear with a slide-down animation, each result shows token icon + name + price in a clean card layout"`
+
+3. **Invent a visual identity** for the project based on its theme. Examples:
+   - A crypto dashboard → dark theme, neon accents, glowing cards, data-dense layout
+   - A paper trading app → sketch/hand-drawn aesthetic, paper textures, pencil fonts
+   - A portfolio site → clean, minimal, lots of whitespace, elegant typography
+   - Write this visual identity into the project description and carry it through every story
+
+4. **Responsive design is not optional** — every UI story must include:
+   - `"Responsive layout works on mobile (375px+), tablet, and desktop"`
+   - Mobile-first approach in the notes where applicable
 
 **Schema** - each story must have ALL these fields:
 ```json
@@ -110,7 +143,63 @@ Create `scripts/springfield/prd.json` following these rules:
 }
 ```
 
-### Step 4: Auto-Add Final Polish Story
+### Step 4: Auto-Add Required Design Stories
+
+**US-002 must ALWAYS be a Visual Theme & Design Foundation story:**
+```json
+{
+  "id": "US-002",
+  "title": "Visual Theme and Design Foundation",
+  "acceptanceCriteria": [
+    "Color palette defined and applied (primary, secondary, accent, background, surface, text colors)",
+    "Typography system set up (heading font, body font, sizes, weights)",
+    "Spacing and layout system established (consistent padding, gaps, max-widths)",
+    "Base component styles: buttons, inputs, cards, containers",
+    "All interactive elements have hover, active, and focus states",
+    "Dark/light theme applied consistently (choose based on project personality)",
+    "Responsive breakpoints configured (mobile 375px+, tablet 768px+, desktop 1024px+)",
+    "npm run typecheck passes",
+    "npm test passes"
+  ],
+  "priority": 2,
+  "passes": false,
+  "reviewed": false,
+  "reviewNotes": "",
+  "attempts": 0,
+  "lastError": "",
+  "blocked": false,
+  "notes": "[FILL IN: Describe the specific visual identity — colors, mood, fonts, personality. e.g., 'Dark theme with electric blue accents, Geist font family, glassmorphism cards with subtle backdrop blur, neon glow on active elements. Should feel like a high-end trading terminal.']"
+}
+```
+
+**Second-to-last story must ALWAYS be a Responsive Design & Polish story:**
+```json
+{
+  "id": "US-XXX",
+  "title": "Responsive Design and Visual Polish",
+  "acceptanceCriteria": [
+    "All pages/views work correctly at 375px mobile width",
+    "All pages/views work correctly at 768px tablet width",
+    "Navigation is mobile-friendly (hamburger menu, bottom nav, or equivalent)",
+    "Touch targets are at least 44px on mobile",
+    "Text is readable without horizontal scrolling on all screen sizes",
+    "Animations and transitions are smooth (no jank)",
+    "Consistent spacing and alignment across all components",
+    "npm run typecheck passes",
+    "npm test passes"
+  ],
+  "priority": 998,
+  "passes": false,
+  "reviewed": false,
+  "reviewNotes": "",
+  "attempts": 0,
+  "lastError": "",
+  "blocked": false,
+  "notes": "Test every page at 375px, 768px, and 1280px. Fix layout breaks, overflows, and touch usability issues. Add mobile navigation if not already present."
+}
+```
+
+### Step 5: Auto-Add Final Polish Story
 
 The LAST story (highest priority number) must ALWAYS be:
 ```json
@@ -146,21 +235,33 @@ BAD (too big):
 
 GOOD (right-sized):
   US-001: "Project Setup with Framework and Tooling"
-  US-002: "Login Form UI Component"
-  US-003: "Email Validation Logic"
-  US-004: "Auth API Client"
-  US-005: "Login Form Integration with API"
-  US-006: "Auth State Management"
+  US-002: "Visual Theme and Design Foundation"
+  US-003: "Login Form UI Component"
+  US-004: "Email Validation Logic"
+  US-005: "Auth API Client"
+  US-006: "Login Form Integration with API"
+  US-007: "Auth State Management"
 
 BAD (vague criteria):
   "Users can search for things"
 
 GOOD (explicit criteria):
   "Search input with debounced API calls (300ms)"
-  "Results display token name, symbol, and price"
-  "Loading spinner during search"
-  "Error message on API failure"
-  "Empty state when no results found"
+  "Results display token name, symbol, and price in styled cards"
+  "Loading skeleton with themed animation during search"
+  "Error message styled consistently with design system"
+  "Empty state with illustration or icon and helpful message"
+  "Responsive layout works on mobile (375px+), tablet, and desktop"
+
+BAD (no design direction in notes):
+  notes: "Create a dashboard page with token list"
+
+GOOD (rich visual direction in notes):
+  notes: "Dashboard uses a dark card grid layout. Each token card has a subtle
+  glow border on hover, shows the token icon (32px), name, symbol, and price
+  in a compact layout. Cards animate in with a fade-up on first load. Mobile
+  view switches to a single-column list. Use the neon accent color for
+  price-positive tokens, muted red for negative."
 ```
 
 ## Output

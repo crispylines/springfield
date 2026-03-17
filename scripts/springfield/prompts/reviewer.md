@@ -36,6 +36,14 @@ Also check:
 - [ ] TypeScript types are properly used (no `any` unless justified)
 - [ ] No hardcoded values that should be configurable
 
+**UI/Design quality checks** (for any story that touches UI):
+- [ ] Colors, fonts, and spacing match the Design Standards in architecture.md
+- [ ] Interactive elements have hover, focus, and active states
+- [ ] Layout is responsive — no fixed widths that would break on mobile
+- [ ] Loading and empty states are present and styled consistently
+- [ ] Transitions/animations are smooth (not abrupt style changes)
+- [ ] Visual direction from the story's `notes` field was followed
+
 ### Step 4: Run Verification (if needed)
 
 If you need to verify something the Builder might have missed:
@@ -102,6 +110,10 @@ npm run typecheck && npm test
 - Tests don't test real behavior → REJECT
 - TypeScript `any` used without reason → REJECT
 - No error handling on API calls → REJECT
+- No hover/focus states on interactive elements → REJECT
+- Fixed widths that break responsive layout → REJECT
+- Missing loading or empty states for async/list components → REJECT
+- Colors/fonts don't match Design Standards → REJECT (specify which ones)
 - Minor style differences from plan → APPROVE (note it)
 - Could be slightly better but works → APPROVE
 

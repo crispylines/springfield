@@ -27,9 +27,22 @@ Rules:
 - Implement ONLY this one story
 - Follow existing codebase patterns from progress.txt
 - Follow the architecture plan from architecture.md
+- Follow the **Design Standards** section in architecture.md for all UI work
 - Write tests for new functionality
 - Use TypeScript strict mode
 - No linter errors
+
+**UI Quality Rules** (apply to every component you create):
+- **Mobile-first**: Write base styles for mobile (375px), then add `min-width` breakpoints for larger screens
+- **No fixed widths** on containers — use max-width, percentage, or fluid sizing
+- **All interactive elements** must have hover, focus, and active states
+- **Transitions**: Add subtle transitions to hover/focus state changes (150-200ms ease)
+- **Loading states**: Every async operation needs a loading indicator styled to match the design system
+- **Empty states**: Every list/collection needs an empty state with an icon and helpful message
+- **Consistent spacing**: Follow the spacing system from architecture.md's Design Standards
+- **Colors and fonts**: Use the exact palette and typography from the Design Standards — never invent new colors
+- **Semantic HTML**: Use proper elements (button, nav, main, section, article) for accessibility
+- **Visual storytelling in notes**: Read the story `notes` field carefully — it contains visual direction, not just technical hints
 
 ### Step 4: Verify
 
