@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Springfield Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loading-screen">
+        <div id="loading-title">SPRINGFIELD</div>
+        <div id="loading-bar-container">
+            <div id="loading-bar-fill"></div>
+        </div>
+        <div id="loading-text">Loading assets...</div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+        <div id="header">
+            <span id="title">SPRINGFIELD</span>
+            <span id="project-name"></span>
+            <span id="iteration-counter"></span>
+        </div>
+        <div id="canvas-container">
+            <canvas id="scene"></canvas>
+        </div>
+        <div id="footer">
+            <div id="progress-panel">
+                <div id="phase-label">Waiting for Springfield...</div>
+                <div id="progress-bar-container">
+                    <div id="progress-bar-fill"></div>
+                    <span id="progress-text">0 / 0</span>
+                </div>
+                <div id="story-stats"></div>
+            </div>
+            <div id="event-log-panel">
+                <div id="event-log-title">EVENT LOG</div>
+                <div id="event-log"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="engine.js"></script>
+</body>
+</html>

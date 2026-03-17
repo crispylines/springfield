@@ -1,0 +1,47 @@
+# Springfield Progress Log
+
+## Codebase Patterns
+
+> Reusable patterns discovered during development.
+> Builder reads this section FIRST each iteration to maintain consistency.
+> Architect maintains and condenses this section to keep it lean.
+
+- **Script structure**: springfield.ps1 (PowerShell) and springfield.sh (Bash) are parallel implementations
+- **Prompts directory**: All agent prompts live in scripts/springfield/prompts/
+- **Resume detection**: Check if prd.json has stories → skip decomposer. Check if architecture.md exists → skip architect.
+- **State tracking**: prd.json fields — passes (builder), reviewed (reviewer), blocked (script), attempts (both)
+- **Git checkpoints**: Tag format is `springfield-checkpoint-{story-id}`, created before each builder attempt
+- **Completion signal**: Only builder outputs `<promise>COMPLETE</promise>`, no other agent uses this
+
+## Key Files
+
+- scripts/springfield/springfield.ps1 — PowerShell orchestrator
+- scripts/springfield/springfield.sh — Bash orchestrator
+- scripts/springfield/prompts/decomposer.md — Decomposer agent instructions
+- scripts/springfield/prompts/architect.md — Architect agent instructions
+- scripts/springfield/prompts/builder.md — Builder agent instructions
+- scripts/springfield/prompts/reviewer.md — Reviewer agent instructions
+- scripts/springfield/prd.json — User stories (generated, source of truth for progress)
+- scripts/springfield/progress.txt — This file (append-only learnings log)
+- scripts/springfield/research.md — Decomposer research output (generated)
+- scripts/springfield/architecture.md — Architect implementation plan (generated)
+
+---
+
+# Phase Log
+
+> Each phase appends entries below. Never delete previous entries.
+
+### 2026-03-15 - SYSTEM SETUP
+- Springfield system created with 4 agent roles
+- File structure: prompts/ directory with decomposer.md, architect.md, builder.md, reviewer.md
+- Enhanced prd.json schema with reviewed, reviewNotes, attempts, lastError, blocked fields
+- Resume capability: script detects existing files and skips completed phases
+- Rollback: git tags before each story, rollback after 3 failures, user prompt to continue/stop
+- Both PowerShell and Bash scripts implemented
+- **Learnings:**
+  - Keep decomposer prompt generic — it should work for any project type
+  - Reviewer must be strict but fair — reject for missing criteria, not style preferences
+  - Builder reads architecture.md for per-story implementation notes
+  - progress.txt Codebase Patterns section is the "hot" memory — keep it condensed
+---
