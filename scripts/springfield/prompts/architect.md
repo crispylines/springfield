@@ -27,6 +27,41 @@ Create `scripts/springfield/architecture.md` with this structure:
 Generated: [date]
 Project: [project name]
 
+## Product Overview
+
+[2-3 sentences explaining WHAT this product is, WHO it's for, and HOW it works at a high level.
+The Builder reads this to understand the big picture — not just individual stories.
+Example: "PumpScan is a Solana token intelligence tool. Users paste any Solana address and the app
+auto-detects whether it's a token or wallet, then shows deep analysis. Token views and wallet views
+cross-link to each other, creating an exploration tool."]
+
+## Domain Rules
+
+Rules specific to THIS project that the Builder must follow on every story.
+These prevent repeated mistakes and enforce project-specific conventions.
+
+### Styling Approach
+- [e.g., "CSS Modules only — every component gets a .module.css file, NO Tailwind utility classes"
+  OR "Tailwind CSS — use utility classes, custom theme in tailwind.config"
+  OR "styled-components with theme provider"]
+- [e.g., "All design tokens via CSS custom properties in globals.css — never hardcode hex values"]
+
+### API & Data Rules
+- [e.g., "API key must NEVER be exposed client-side — use Next.js API routes as proxy"]
+- [e.g., "Rate limits: 10 req/s for RPC, 2 req/s for DAS — add delays for sequential calls"]
+- [e.g., "All API responses must have TypeScript interfaces — no `any` for API data"]
+
+### Framework-Specific Gotchas
+- [e.g., "Three.js components MUST have 'use client' directive"]
+- [e.g., "Use happy-dom instead of jsdom for Vitest — jsdom has ESM issues with parse5"]
+- [e.g., "Next.js 14+ App Router uses `use(params)` to unwrap Promise params in page components"]
+
+### Environment & Config
+- [e.g., ".env.local has real keys — NEVER overwrite it"]
+- [e.g., "All env vars read through lib/config.ts, not directly from process.env"]
+
+(Fill in based on the tech stack and research findings. Be specific — these rules save the Builder from wasting entire attempts on preventable mistakes.)
+
 ## Project Structure
 ```
 src/
@@ -123,6 +158,8 @@ Patterns the Builder should follow consistently:
 ### Step 4: Validate the Plan
 
 Before finishing, check:
+- [ ] Product Overview explains what the product IS in 2-3 sentences
+- [ ] Domain Rules has specific styling, API, framework, and config rules for THIS project
 - [ ] Every story in prd.json has implementation notes
 - [ ] Dependency map is complete and has no cycles
 - [ ] Core types/interfaces are defined
@@ -153,6 +190,11 @@ When the orchestrator calls you AFTER a story has been completed and reviewed, y
 2. Check if the architecture plan needs updates for remaining stories
 3. If the reviewer flagged issues that affect the plan, update `architecture.md`
 4. Update the Shared Patterns section with new patterns discovered
+5. **Condense the Codebase Patterns section** in progress.txt if it's getting long:
+   - Merge duplicate or overlapping entries
+   - Remove entries that are too story-specific (move them to the Phase Log instead)
+   - Keep the Critical Gotchas section tight — every entry should be a clear `Problem → Fix`
+   - The Codebase Patterns section is read by every agent every iteration — brevity matters
 
 Only modify architecture.md if something meaningful changed. Don't rewrite it every time.
 

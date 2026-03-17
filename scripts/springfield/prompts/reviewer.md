@@ -12,11 +12,11 @@ You are the Reviewer agent in the Springfield system. After the Builder implemen
 
 ### Step 2: Gather Evidence
 
-1. Read `scripts/springfield/architecture.md` — find the implementation notes for this story
-2. Check the recent git commits: `git log --oneline -5`
-3. Read the git diff for the story's commit: `git diff HEAD~1`
+1. Read `scripts/springfield/progress.txt` — **Codebase Patterns section FIRST** (know existing patterns and gotchas before reviewing)
+2. Read `scripts/springfield/architecture.md` — find the implementation notes and Design Standards for this story
+3. Check the recent git commits: `git log --oneline -5`
+4. Read the git diff for the story's commit: `git diff HEAD~1`
    - If multiple commits, check `git log` and diff from the right base
-4. Read `scripts/springfield/progress.txt` — check what the Builder logged
 5. Read the actual source files that were changed
 
 ### Step 3: Validate
@@ -59,17 +59,22 @@ npm run typecheck && npm test
    - Set `"reviewed": true`
    - Set `"reviewNotes": "Approved: [brief summary of what looks good]"`
 
-2. If you noticed patterns worth preserving, you MAY update `scripts/springfield/architecture.md`:
+2. **Update Codebase Patterns** in `scripts/springfield/progress.txt` — add any new patterns or gotchas you noticed to the appropriate category:
+   - **Component & Code Patterns**: Reusable patterns the Builder established
+   - **Testing Patterns**: Test utilities, mocking approaches that worked
+   - **Design System Values**: Exact color/font/spacing values used (so future stories stay consistent)
+
+3. If you noticed patterns worth preserving, you MAY update `scripts/springfield/architecture.md`:
    - Add to Shared Patterns section
    - Adjust implementation notes for upcoming stories if needed
    - Only do this if something meaningful was learned
 
-3. Append to `scripts/springfield/progress.txt`:
+4. Append to `scripts/springfield/progress.txt` Phase Log:
 ```markdown
 ### [Date] - REVIEWER - [Story ID]
 - Verdict: APPROVED
 - Quality notes: [what was done well]
-- Patterns noticed: [any new patterns]
+- Patterns noticed: [any new patterns added to Codebase Patterns]
 ---
 ```
 
@@ -81,7 +86,11 @@ npm run typecheck && npm test
    - Set `"reviewNotes": "Rejected: [specific issues that must be fixed]"`
    - Note: Do NOT increment `attempts` — the script handles that
 
-2. Append to `scripts/springfield/progress.txt`:
+2. **Update Critical Gotchas** in `scripts/springfield/progress.txt` Codebase Patterns section — add the rejection reason so the Builder doesn't repeat the mistake:
+   - Format: `Problem: [what was wrong] → Fix: [what the Builder should do instead]`
+   - This is the most important learning — it prevents the same rejection from happening again
+
+3. Append to `scripts/springfield/progress.txt` Phase Log:
 ```markdown
 ### [Date] - REVIEWER - [Story ID]
 - Verdict: REJECTED
@@ -89,10 +98,11 @@ npm run typecheck && npm test
   - [specific issue 1]
   - [specific issue 2]
 - What needs to change: [clear instructions for Builder]
+- Gotchas added to Codebase Patterns: [list what was added]
 ---
 ```
 
-3. If the rejection reveals an architecture problem, update `scripts/springfield/architecture.md`:
+4. If the rejection reveals an architecture problem, update `scripts/springfield/architecture.md`:
    - Adjust implementation notes for this story
    - Flag downstream impacts if any
 

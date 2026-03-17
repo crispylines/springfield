@@ -56,6 +56,12 @@ Generated: [date]
 - Component style: [e.g., glassmorphism, flat, neumorphism, sketch/hand-drawn]
 - Inspiration: [any reference sites or design styles]
 
+## Framework & Library Gotchas
+- [Known issues with the chosen tech stack — e.g., "jsdom has ESM issues with Vitest, use happy-dom"]
+- [Framework-specific rules — e.g., "Three.js components need 'use client' in Next.js App Router"]
+- [API quirks — e.g., "Helius DAS API uses JSON-RPC format, not REST"]
+- [Testing gotchas — e.g., "React Query needs QueryClientProvider wrapper in tests"]
+
 ## Constraints & Risks
 - [anything that could cause problems]
 ```

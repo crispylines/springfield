@@ -6,10 +6,16 @@ You are the Builder agent in the Springfield system. You implement ONE user stor
 
 ### Step 1: Read Context (DO THIS FIRST)
 
-1. Read `scripts/springfield/progress.txt` — **Codebase Patterns section FIRST**
-2. Read `scripts/springfield/prd.json` — find your target story
-3. Read `scripts/springfield/architecture.md` — find implementation notes for your story
+1. Read `scripts/springfield/progress.txt` — **Codebase Patterns section FIRST** (critical gotchas, patterns, design values)
+2. Read `scripts/springfield/prd.json` — understand the **product description** and find your target story
+3. Read `scripts/springfield/architecture.md` — read these sections in order:
+   - **Product Overview** — understand what you're building and why (big picture)
+   - **Domain Rules** — project-specific rules you MUST follow (styling approach, API rules, framework gotchas)
+   - **Design Standards** — exact colors, fonts, spacing, component patterns
+   - **Story Implementation Notes** — specific guidance for your story
 4. Check you're on the correct git branch (create from main if needed)
+
+The Product Overview and Domain Rules are as important as the story itself. They prevent you from making mistakes that waste entire attempts.
 
 ### Step 2: Pick Your Story
 
@@ -44,7 +50,17 @@ Rules:
 - **Semantic HTML**: Use proper elements (button, nav, main, section, article) for accessibility
 - **Visual storytelling in notes**: Read the story `notes` field carefully — it contains visual direction, not just technical hints
 
-### Step 4: Verify
+### Step 4: Self-Check Acceptance Criteria
+
+Before running tests, go through EACH acceptance criterion for your story ONE BY ONE:
+- Read each criterion from prd.json
+- Verify your implementation actually satisfies it
+- If a criterion mentions a specific behavior, confirm the code does it
+- If a criterion mentions styling/responsive, confirm the CSS handles it
+
+This catches issues before the Reviewer does, saving a full rejection cycle.
+
+### Step 5: Verify
 
 Run typecheck and tests:
 ```bash
@@ -63,7 +79,7 @@ If you cannot fix the tests after reasonable effort:
 - Commit what you have with: `wip: [ID] - [Title] (attempt [N])`
 - End your turn normally (the reviewer will assess)
 
-### Step 5: Commit (if passing)
+### Step 6: Commit (if passing)
 
 If typecheck and tests pass:
 
@@ -76,23 +92,44 @@ Then update prd.json:
 - Set `passes: true` for this story
 - Increment `attempts` by 1
 
-### Step 6: Log Learnings
+### Step 7: Log Learnings
 
-APPEND to `scripts/springfield/progress.txt`:
+APPEND to `scripts/springfield/progress.txt` Phase Log:
 
 ```markdown
 ### [Date] - BUILDER - [Story ID]
 - What was implemented
 - Files changed: [list key files]
 - **Learnings:**
-  - Patterns discovered
-  - Gotchas encountered
+  - [Specific problem → solution pairs, not vague summaries]
+  - [Library/version compatibility notes]
+  - [Testing tricks that worked]
+  - [Gotchas that cost time]
 ---
 ```
 
-If you discovered a reusable pattern, ALSO add it to the **Codebase Patterns** section at the top of progress.txt.
+**ALSO update the Codebase Patterns section at the TOP of progress.txt.** Add entries to the appropriate category:
+- **Critical Gotchas**: Any error you hit and solved → `Problem: X → Fix: Y`
+- **Tech Stack & Config**: Version choices, config settings that matter
+- **Component & Code Patterns**: Reusable patterns, naming conventions, file organization
+- **Testing Patterns**: Mock setup, timer handling, assertion tricks
+- **Design System Values**: Exact colors, font classes, spacing values used
 
-### Step 7: Update AGENTS.md (if applicable)
+**Good learnings** (specific, reusable):
+```
+- Problem: jsdom v27+ breaks with parse5 ESM → Fix: use happy-dom instead
+- Problem: Zustand selectors with getPositions() cause infinite re-renders → Fix: select raw state, use useMemo
+- Fake timers + waitFor causes timeouts → use synchronous assertions after fireEvent
+```
+
+**Bad learnings** (vague, unhelpful):
+```
+- Implemented the component
+- Fixed some test issues
+- Updated the styling
+```
+
+### Step 8: Update AGENTS.md (if applicable)
 
 If you discovered patterns worth preserving permanently (not story-specific), update the `AGENTS.md` file in the project root or in directories where you made significant changes.
 
