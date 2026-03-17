@@ -302,7 +302,7 @@ done
 if [ "$NEEDS_DECOMPOSER" = true ]; then
     write_phase "PHASE 0" "What are we building?" "36"
     
-    echo -n "  What do you want to build? (1 sentence): "
+    echo -n "  Describe your project in a few sentences: "
     read -r PROJECT_DESCRIPTION
     
     if [ -z "$PROJECT_DESCRIPTION" ]; then
@@ -319,6 +319,51 @@ if [ "$NEEDS_DECOMPOSER" = true ]; then
         write_step "References: $REFERENCE_URLS" "37"
     fi
     PROJECT_NAME_VAR="$PROJECT_DESCRIPTION"
+    
+    # --- FOLLOW-UP QUESTIONS ---
+    
+    echo ""
+    write_step "Springfield is generating follow-up questions..." "36"
+    
+    FOLLOWUP_PROMPT=$(cat "$PROMPTS_DIR/followup.md")
+    FOLLOWUP_PROMPT="${FOLLOWUP_PROMPT}
+${PROJECT_DESCRIPTION}"
+    if [ -n "$REFERENCE_URLS" ]; then
+        FOLLOWUP_PROMPT="${FOLLOWUP_PROMPT}
+Reference URLs: ${REFERENCE_URLS}"
+    fi
+    
+    FOLLOWUP_TEMP="$SCRIPT_DIR/.springfield-current-prompt.md"
+    echo "$FOLLOWUP_PROMPT" > "$FOLLOWUP_TEMP"
+    
+    FOLLOWUP_OUTPUT=$(claude --dangerously-skip-permissions -p "Read and follow ALL instructions in this file: $FOLLOWUP_TEMP" 2>&1) || true
+    rm -f "$FOLLOWUP_TEMP"
+    
+    FOLLOWUP_ANSWERS=""
+    
+    QUESTIONS=$(echo "$FOLLOWUP_OUTPUT" | grep -E '^\s*Q[0-9]' | sed 's/^[[:space:]]*//')
+    
+    if [ -n "$QUESTIONS" ]; then
+        echo ""
+        echo -e "\033[36m  Springfield has a few follow-up questions:\033[0m"
+        echo ""
+        
+        while IFS= read -r qline; do
+            QNUM=$(echo "$qline" | grep -oE 'Q[0-9]' | head -1 | tr -d 'Q')
+            QTEXT=$(echo "$qline" | sed 's/^Q[0-9]:[[:space:]]*//')
+            echo -e "\033[37m  ${QNUM}. ${QTEXT}\033[0m"
+            echo -n "     "
+            read -r ANSWER
+            if [ -n "$ANSWER" ]; then
+                FOLLOWUP_ANSWERS="${FOLLOWUP_ANSWERS}
+- Q: ${QTEXT}
+  A: ${ANSWER}"
+            fi
+            echo ""
+        done <<< "$QUESTIONS"
+    else
+        write_step "No follow-up questions generated, proceeding..." "37"
+    fi
 fi
 
 # --- PHASE 1: DECOMPOSER ---------------------------------------------
@@ -338,6 +383,13 @@ if [ "$NEEDS_DECOMPOSER" = true ]; then
 **Project Root**: $PROJECT_ROOT
 **Scripts Directory**: $SCRIPT_DIR
 "
+    
+    if [ -n "$FOLLOWUP_ANSWERS" ]; then
+        USER_INPUT="${USER_INPUT}
+**Follow-up Q&A** (user clarifications):
+${FOLLOWUP_ANSWERS}
+"
+    fi
     
     FULL_PROMPT="${DECOMPOSER_PROMPT}${USER_INPUT}"
     

@@ -6,18 +6,20 @@
 ## Project Overview
 
 Springfield is an enhanced autonomous development loop with four agent roles:
-- **Decomposer**: Researches and generates user stories from a one-sentence description
-- **Architect**: Creates implementation plans from user stories
-- **Builder**: Implements stories one by one (core loop behavior)
-- **Reviewer**: Validates completed stories against acceptance criteria
+- **Decomposer**: Researches and generates design-rich user stories from user input
+- **Architect**: Creates implementation plans with domain rules, design standards, and product overview
+- **Builder**: Implements stories one by one with design quality and acceptance criteria self-checks
+- **Reviewer**: Validates completed stories against acceptance criteria, code quality, and UI/design standards
 
 ## Architecture Patterns
 
 - **Prompt files are the agent skills**: Each agent role has a dedicated prompt in `scripts/springfield/prompts/`
+- **Follow-up questions**: Before decomposing, Springfield asks Claude to generate 3 clarifying questions to enrich the user's input (visual style, key interactions, technical preferences)
 - **State lives in JSON**: `prd.json` is the single source of truth for progress
 - **Resume by file detection**: Script checks if prd.json/architecture.md exist to decide which phases to skip
 - **Git checkpoints**: Tags created before each story attempt for rollback capability
 - **Two-pass validation**: Builder implements → Reviewer validates → next story
+- **Shared knowledge**: progress.txt Codebase Patterns section has structured categories (Critical Gotchas, Tech Stack, Component Patterns, Testing, Design System) — read by ALL agents, updated by Builder and Reviewer
 
 ## File Conventions
 

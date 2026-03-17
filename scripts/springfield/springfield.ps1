@@ -260,7 +260,7 @@ foreach ($promptFile in @("decomposer.md","architect.md","builder.md","reviewer.
 if ($needsDecomposer -and -not $SkipSetup) {
     Write-Phase "PHASE 0" "What are we building?" "Cyan"
     
-    $projectDescription = Read-Host "  What do you want to build? (1 sentence)"
+    $projectDescription = Read-Host "  Describe your project in a few sentences"
     
     if ([string]::IsNullOrWhiteSpace($projectDescription)) {
         Write-Host "  ERROR: You must provide a project description." -ForegroundColor Red
@@ -276,6 +276,54 @@ if ($needsDecomposer -and -not $SkipSetup) {
         Write-Step "References: $referenceUrls" "White"
     }
     $script:projectName = $projectDescription
+    
+    # --- FOLLOW-UP QUESTIONS ---
+    
+    Write-Host ""
+    Write-Step "Springfield is generating follow-up questions..." "Cyan"
+    
+    $followupPrompt = Get-Content (Join-Path $PromptsDir "followup.md") -Raw
+    $followupPrompt += "`n$projectDescription"
+    if (-not [string]::IsNullOrWhiteSpace($referenceUrls)) {
+        $followupPrompt += "`nReference URLs: $referenceUrls"
+    }
+    
+    $followupTemp = Join-Path $ScriptDir ".springfield-current-prompt.md"
+    $followupPrompt | Out-File -FilePath $followupTemp -Encoding UTF8 -NoNewline
+    
+    try {
+        $followupInstruction = "Read and follow ALL instructions in this file: $followupTemp"
+        $followupOutput = & claude --dangerously-skip-permissions -p $followupInstruction 2>&1 | Out-String
+    }
+    catch {
+        $followupOutput = ""
+    }
+    Remove-Item $followupTemp -ErrorAction SilentlyContinue
+    
+    $followupAnswers = ""
+    
+    $questions = $followupOutput -split "`n" | Where-Object { $_ -match '^\s*Q\d' } | ForEach-Object { $_.Trim() }
+    
+    if ($questions.Count -gt 0) {
+        Write-Host ""
+        Write-Host "  Springfield has a few follow-up questions:" -ForegroundColor Cyan
+        Write-Host ""
+        
+        foreach ($q in $questions) {
+            $questionText = $q -replace '^\s*Q\d:\s*', ''
+            $qNum = "?"
+            if ($q -match 'Q(\d)') { $qNum = $Matches[1] }
+            Write-Host "  $qNum. $questionText" -ForegroundColor White
+            $answer = Read-Host "     "
+            if (-not [string]::IsNullOrWhiteSpace($answer)) {
+                $followupAnswers += "`n- Q: $questionText`n  A: $answer"
+            }
+            Write-Host ""
+        }
+    }
+    else {
+        Write-Step "No follow-up questions generated, proceeding..." "Gray"
+    }
 }
 
 # --- PHASE 1: DECOMPOSER ---------------------------------------------
@@ -295,6 +343,14 @@ if ($needsDecomposer) {
 **Project Root**: $ProjectRoot
 **Scripts Directory**: $ScriptDir
 "@
+    
+    if (-not [string]::IsNullOrWhiteSpace($followupAnswers)) {
+        $userInput += @"
+
+**Follow-up Q&A** (user clarifications):
+$followupAnswers
+"@
+    }
     
     $fullPrompt = $decomposerPrompt + $userInput
     

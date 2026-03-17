@@ -78,11 +78,24 @@ chmod +x scripts/springfield/springfield.sh
 ./scripts/springfield/springfield.sh
 ```
 
-### 3. Answer two questions
+### 3. Answer a few questions
 
 ```
-What do you want to build? (1 sentence): A real-time crypto dashboard with price alerts
-Any reference URLs or docs? (comma-separated, or Enter to skip): https://docs.coingecko.com/v3
+Describe your project in a few sentences: A real-time crypto dashboard that shows
+new PumpFun token launches with filtering by age, market cap, and search
+
+Any reference URLs or docs? (comma-separated, or Enter to skip): https://pumpportal.fun/data-api
+
+Springfield has a few follow-up questions:
+
+1. What visual style do you want for this project?
+   > dark theme, neon accents, data-dense layout like a trading terminal
+
+2. What are the most important user interactions?
+   > click tokens to see details, filter by criteria, search by name
+
+3. Any technical preferences or constraints?
+   > use Tailwind, WebSocket for real-time data
 ```
 
 ### 4. Watch it work
